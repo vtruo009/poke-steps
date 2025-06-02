@@ -16,7 +16,7 @@ struct Pokemon: Identifiable, Codable {
     var height: Double
     var weight: Double
 
-    enum PokemonType: Codable {
+    enum PokemonType: CaseIterable, Codable {
         case fire
         case water
         case grass
@@ -76,6 +76,33 @@ struct Pokemon: Identifiable, Codable {
                 return Color(hex: "#D685AD")
             }
         }
+    }
+    
+    init(
+        id: Int,
+        name: String,
+        image: String,
+        type: [PokemonType],
+        height: Double,
+        weight: Double
+    ) {
+        self.id = id
+        self.name = name
+        self.image = image
+        self.type = type
+        self.height = height
+        self.weight = weight
+    }
+    
+    init() {
+        self.init(
+            id: 0,
+            name: "Bulbasaur",
+            image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png",
+            type: [.grass, .poison],
+            height: 20,
+            weight: 15
+        )
     }
 }
 
