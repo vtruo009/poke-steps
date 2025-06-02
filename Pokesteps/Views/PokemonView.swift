@@ -25,6 +25,6 @@ struct PokemonView: View {
 }
 
 #Preview {
-    var testPokemon = Pokemon()
+    let testPokemon = Pokemon()
     PokemonView(pokemon: testPokemon)
 }
