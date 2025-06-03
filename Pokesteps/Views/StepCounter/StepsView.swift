@@ -15,8 +15,7 @@ struct StepsView: View {
             VStack {
                 Spacer()
                 // TODO: replace with calculated progress
-                ProgressRingView(progress: 0.79)
-                    .frame(width: 350, height: 350)
+                ProgressRingView(progress: 0.71)
                 Spacer()
                 // TODO: replace with HealthManager data
                 Text("3000").font(.system(size: 64))

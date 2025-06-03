@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct PokedexView: View {
-    @State var isPresenting: Bool = false
+    @State var selectedPokemon: Pokemon? = nil
 
     let pokemons: [Pokemon] = Pokemon.testPokemons
 
@@ -22,27 +22,32 @@ struct PokedexView: View {
                 LazyVGrid(columns: columns) {
                     ForEach(pokemons, id: \.id) { pokemon in
                         Button {
-                            isPresenting = true
+                            selectedPokemon = pokemon
                         } label: {
-                            PokemonView(pokemon: pokemon)
+                            VStack {
+                                PokemonView(pokemon: pokemon)
+                                Text("\(pokemon.name)")
+                                    .font(.system(size: 20))
+                                    .padding(.bottom)
+                                    .padding(.top, -15)
+                            }
                         }
                         .buttonStyle(PlainButtonStyle())
                     }
-                    .sheet(isPresented: $isPresenting) {
-                        NavigationView {
-                            PokemonDetailsView()
-                                .toolbar {
-                                    ToolbarItem(placement: .cancellationAction)
-                                    {
-                                        Button("Dismiss") {
-                                            isPresenting = false
-                                        }
-                                    }
-                                }
-                        }
-                    }
                 }
                 .padding(.horizontal, 10)
+            }
+            .sheet(item: $selectedPokemon) { pokemon in
+                NavigationView {
+                    PokemonDetailsView(pokemon: pokemon)
+                        .toolbar {
+                            ToolbarItem(placement: .cancellationAction) {
+                                Button("Close") {
+                                    selectedPokemon = nil
+                                }
+                            }
+                        }
+                }
             }
             .background(AppSetting.background)
             .navigationTitle("Pokedex")

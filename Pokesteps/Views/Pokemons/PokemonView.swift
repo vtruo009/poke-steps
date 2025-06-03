@@ -29,10 +29,10 @@ struct PokemonView: View {
             }
             .aspectRatio(1, contentMode: .fit)
 
-            Text("\(pokemon.name)")
-                .font(.system(size: 20))
-                .padding(.bottom)
-                .padding(.top, -15)
+//            Text("\(pokemon.name)")
+//                .font(.system(size: 48))
+//                .padding(.bottom)
+//                .padding(.top, -15)
         }
     }
 }

@@ -14,24 +14,37 @@ struct ProgressRingView: View {
     var body: some View {
         ZStack {
             Circle()
-                .stroke(.gray.opacity(0.3), lineWidth: 30)
+                .stroke(.gray.opacity(0.3), lineWidth: 35)
             Circle()
                 .trim(from: 0, to: targetValue)
                 .stroke(
-                    AppSetting.blue,
-                    style: StrokeStyle(lineWidth: 30, lineCap: .round)
+                    progress >= 1 ? AppSetting.yellow : AppSetting.blue,
+                    style: StrokeStyle(lineWidth: 35, lineCap: .round)
                 )
                 .rotationEffect(.degrees(-90))
                 .animation(.easeIn(duration: 2), value: targetValue)
         }
-        .padding()
+        .frame(width: 330, height: 330)
+        .padding(20)
         .drawingGroup()
         .onAppear {
             targetValue = progress
+        }
+        .overlay {
+            if progress >= 1 {
+                Button {
+                    print("unlock pokemon")
+                } label: {
+                    Image("pokeball")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 260, height: 260)
+                }
+            }
         }
     }
 }
 
 #Preview {
-    ProgressRingView(progress: 0.65)
+    ProgressRingView(progress: 1)
 }
