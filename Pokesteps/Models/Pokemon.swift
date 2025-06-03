@@ -97,13 +97,66 @@ struct Pokemon: Identifiable, Codable {
     init() {
         self.init(
             id: 0,
-            name: "Bulbasaur",
-            image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png",
-            type: [.grass, .poison],
-            height: 20,
-            weight: 15
+            name: "",
+            image: "",
+            type: [],
+            height: 0,
+            weight: 0
         )
     }
+}
+
+extension Pokemon {
+    static let testPokemons: [Pokemon] = [
+        Pokemon(
+            id: 1,
+            name: "Bulbasaur",
+            image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png",
+            type: [.grass,.poison],
+            height: 10,
+            weight: 20
+        ),
+        Pokemon(
+            id: 2,
+            name: "Ivysaur",
+            image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/2.png",
+            type: [.grass,.poison],
+            height: 20,
+            weight: 40
+        ),
+        Pokemon(
+            id: 3,
+            name: "Venusaur",
+            image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/3.png",
+            type: [.grass,.poison],
+            height: 40,
+            weight: 80
+        ),
+        Pokemon(
+            id: 4,
+            name: "Charmander",
+            image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png",
+            type: [.fire],
+            height: 20,
+            weight: 20
+        ),
+        Pokemon(
+            id: 7,
+            name: "Squirtle",
+            image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png",
+            type: [.water],
+            height: 20,
+            weight: 25
+        ),
+        Pokemon(
+            id: 25,
+            name: "Pikachu",
+            image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png",
+            type: [.electric],
+            height: 20,
+            weight: 13
+        ),
+    ]
 }
 
 extension Color {
