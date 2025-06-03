@@ -44,7 +44,7 @@ struct PokedexView: View {
                 }
                 .padding(.horizontal, 10)
             }
-            .background(AppColor.background)
+            .background(AppSetting.background)
             .navigationTitle("Pokedex")
         }
     }
