@@ -49,7 +49,7 @@ struct PokedexView: View {
                         }
                 }
             }
-            .background(AppSetting.background)
+            .background(AppColor.background)
             .navigationTitle("Pokedex")
         }
     }

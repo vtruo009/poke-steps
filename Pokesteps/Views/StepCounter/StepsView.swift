@@ -10,7 +10,7 @@ import SwiftUI
 struct StepsView: View {
     var body: some View {
         ZStack {
-            AppSetting.background.ignoresSafeArea()
+            AppColor.background.ignoresSafeArea()
             
             VStack {
                 Spacer()

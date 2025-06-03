@@ -18,7 +18,7 @@ struct ProgressRingView: View {
             Circle()
                 .trim(from: 0, to: targetValue)
                 .stroke(
-                    progress >= 1 ? AppSetting.yellow : AppSetting.blue,
+                    progress >= 1 ? AppColor.yellow : AppColor.blue,
                     style: StrokeStyle(lineWidth: 35, lineCap: .round)
                 )
                 .rotationEffect(.degrees(-90))

@@ -12,7 +12,7 @@ struct PokemonDetailsView: View {
 
     var body: some View {
         ZStack {
-            AppSetting.background.ignoresSafeArea()
+            AppColor.background.ignoresSafeArea()
             
             VStack {
                 PokemonView(pokemon: pokemon)

@@ -30,7 +30,7 @@ struct MainTabView: View {
                 .transaction { $0.disablesAnimations = true }
                 .frame(width: 150, height: 30)
                 .padding()
-                .background(AppSetting.yellow)
+                .background(AppColor.yellow)
                 .clipShape(RoundedRectangle(cornerRadius: .infinity))
                 .shadow(radius: 5)
             }
