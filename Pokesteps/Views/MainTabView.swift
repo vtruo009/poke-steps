@@ -11,37 +11,35 @@ struct MainTabView: View {
     @State private var selectedTab = 0
 
     var body: some View {
-        VStack {
-            ZStack {
+        NavigationView {
+            ZStack(alignment: .bottom) {
                 switch selectedTab {
                 case 0:
-                    // TODO: Replace with StepsView()
-                    EmptyView()
+                    StepsView()
                 case 1:
-                    // TODO: Replace with PokedexView()
-                    EmptyView()
+                    PokedexView()
                 default:
-                    // TODO: Replace with StepsView()
-                    EmptyView()
+                    StepsView()
                 }
+                
+                HStack {
+                    tabButton(title: "Steps", icon: "shoe", tag: 0)
+                    Spacer()
+                    tabButton(title: "Pokedex", icon: "trophy", tag: 1)
+                }
+                .transaction { $0.disablesAnimations = true }
+                .frame(width: 150, height: 30)
+                .padding()
+                .background(Color(AppColor.yellow))
+                .clipShape(RoundedRectangle(cornerRadius: .infinity))
+                .shadow(radius: 5)
             }
-
-            HStack {
-                tabButton(title: "Steps", icon: "shoe", tag: 0)
-                Spacer()
-                tabButton(title: "Pokedex", icon: "trophy", tag: 1)
-            }
-            .frame(width: 150, height: 30)
-            .padding()
-            .background(Color(AppColor.yellow))
-            .clipShape(RoundedRectangle(cornerRadius: .infinity))
-            .shadow(radius: 5)
         }
     }
 
     func tabButton(title: String, icon: String, tag: Int) -> some View {
         Button {
-            withAnimation(.none) { selectedTab = tag }
+            selectedTab = tag
         } label: {
             Image(systemName: icon)
                 .resizable()

@@ -12,19 +12,32 @@ struct PokemonView: View {
 
     var body: some View {
         VStack {
-            ZStack {
-                Circle().foregroundStyle(.yellow).padding()
-                AsyncImage(url: URL(string: pokemon.image)) { image in
-                    image.image?.resizable()
-                        .aspectRatio(contentMode: .fit)
-                }
+            GeometryReader { geo in
+                Circle()
+                    .foregroundStyle(.white)
+                    .padding()
+                    .overlay {
+                        AsyncImage(url: URL(string: pokemon.image)) { image in
+                            image.image?
+                                .resizable()
+                                .scaledToFit()
+                                .frame(
+                                    width: geo.size.width * 0.8,
+                                    height: geo.size.width * 0.8)
+                        }
+                    }
             }
-            Text("\(pokemon.name)").font(.largeTitle).padding(.bottom)
+            .aspectRatio(1, contentMode: .fit)
+
+            Text("\(pokemon.name)")
+                .font(.system(size: 20))
+                .padding(.bottom)
+                .padding(.top, -15)
         }
     }
 }
 
 #Preview {
-    let testPokemon = Pokemon()
+    let testPokemon = Pokemon.testPokemons[2]
     PokemonView(pokemon: testPokemon)
 }
