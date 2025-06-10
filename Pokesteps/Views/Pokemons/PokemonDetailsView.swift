@@ -29,7 +29,7 @@ struct PokemonDetailsView: View {
                     .padding(.top, -20)
                 Spacer()
                 HStack {
-                    ForEach(pokemon.type, id: \.self) { type in
+                    ForEach(pokemon.types, id: \.self) { type in
                         Rectangle()
                             .foregroundStyle(type.color)
                             .frame(width: 100, height: 35, alignment: .center)

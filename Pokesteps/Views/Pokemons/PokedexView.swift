@@ -8,9 +8,8 @@
 import SwiftUI
 
 struct PokedexView: View {
+    @StateObject var pokemonData = PokemonData()
     @State var selectedPokemon: Pokemon? = nil
-
-    let pokemons: [Pokemon] = Pokemon.testPokemons
 
     var body: some View {
         NavigationView {
@@ -20,7 +19,7 @@ struct PokedexView: View {
                     GridItem(),
                 ]
                 LazyVGrid(columns: columns) {
-                    ForEach(pokemons, id: \.id) { pokemon in
+                    ForEach(pokemonData.pokemons) { pokemon in
                         Button {
                             selectedPokemon = pokemon
                         } label: {
