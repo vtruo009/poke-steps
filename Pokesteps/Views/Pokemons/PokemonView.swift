@@ -17,7 +17,7 @@ struct PokemonView: View {
                     .foregroundStyle(.white)
                     .padding()
                     .overlay {
-                        AsyncImage(url: URL(string: pokemon.image)) { image in
+                        AsyncImage(url: pokemon.image) { image in
                             image.image?
                                 .resizable()
                                 .scaledToFit()
@@ -29,10 +29,6 @@ struct PokemonView: View {
             }
             .aspectRatio(1, contentMode: .fit)
 
-//            Text("\(pokemon.name)")
-//                .font(.system(size: 48))
-//                .padding(.bottom)
-//                .padding(.top, -15)
         }
     }
 }
