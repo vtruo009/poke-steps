@@ -13,7 +13,7 @@ struct PokemonDetailsView: View {
     var body: some View {
         ZStack {
             AppColor.background.ignoresSafeArea()
-            
+
             VStack {
                 PokemonView(pokemon: pokemon)
                     .frame(width: 320, height: 320)
@@ -21,7 +21,7 @@ struct PokemonDetailsView: View {
                     .font(.system(size: 36))
                     .padding(.bottom)
                     .padding(.top, -15)
-                
+
                 // TODO: Replace with computed variable to format id - #0001
                 Text("#000\(pokemon.id)")
                     .font(.system(size: 20))
@@ -41,9 +41,12 @@ struct PokemonDetailsView: View {
                     }
                 }
                 Spacer()
-                // TODO: Replace with computed variable to formated height & weight
-                Text("Height: \(pokemon.height)")
-                Text("Weight: \(pokemon.weight)")
+                VStack(alignment: .leading) {
+                    Text("Height: \(PokemonFormatter.formattedHeight(pokemon.height))")
+                    Text("Weight: \(PokemonFormatter.formattedWeight(pokemon.weight))")
+                }
+                .font(.system(size: 20))
+                .fontWeight(.medium)
                 Spacer()
             }
         }

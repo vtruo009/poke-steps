@@ -10,7 +10,8 @@ import Foundation
 struct PokemonFetchingClient {
     static func getPokemons() async throws -> [Pokemon] {
         var pokemons: [Pokemon] = []
-        for i in 1...151 {
+//        for i in 1...151 {
+        for i in 1...3 {
             async let (data, _) = URLSession.shared.data(
                 from: URL(string: "https://pokeapi.co/api/v2/pokemon/\(i)")!)
             let response = try await JSONDecoder().decode(

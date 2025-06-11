@@ -8,8 +8,11 @@
 import SwiftUI
 
 struct PokedexView: View {
-    @StateObject var pokemonData = PokemonData()
+//    @StateObject var pokemonData = PokemonData()
+    var pokemons = Pokemon.testPokemons
     @State var selectedPokemon: Pokemon? = nil
+    let unlockedCount: Int = 42
+    let totalCount: Int = 151
 
     var body: some View {
         NavigationView {
@@ -18,8 +21,14 @@ struct PokedexView: View {
                     GridItem(),
                     GridItem(),
                 ]
+                Section(header: Text("Unlocked: \(unlockedCount)/\(totalCount)")
+                    .font(.caption)
+                    .foregroundStyle(.gray)) {
+                    // your grid or list
+                }
+
                 LazyVGrid(columns: columns) {
-                    ForEach(pokemonData.pokemons) { pokemon in
+                    ForEach(pokemons) { pokemon in
                         Button {
                             selectedPokemon = pokemon
                         } label: {

@@ -133,6 +133,7 @@ struct Pokemon: Identifiable, Codable {
     init() {
         self.init(id: 0, name: "", image: URL(string:"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png")!, types: [], height: 0, weight: 0)
     }
+    
 }
 
 struct TypesContainer: Decodable {
@@ -158,8 +159,8 @@ extension Pokemon {
             name: "Ivysaur",
             image: URL(string: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/2.png")!,
             types: [.grass, .poison],
-            height: 20,
-            weight: 40
+            height: 10,
+            weight: 130
         ),
         Pokemon(
             id: 3,
@@ -180,7 +181,7 @@ extension Pokemon {
         Pokemon(
             id: 7,
             name: "Squirtle",
-            image: URL(string: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/5.png")!,
+            image: URL(string: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png")!,
             types: [.water],
             height: 20,
             weight: 25
@@ -188,7 +189,7 @@ extension Pokemon {
         Pokemon(
             id: 25,
             name: "Pikachu",
-            image: URL(string: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png")!,
+            image: URL(string: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png")!,
             types: [.electric],
             height: 20,
             weight: 13
