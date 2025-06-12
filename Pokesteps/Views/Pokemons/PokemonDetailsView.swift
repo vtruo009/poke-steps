@@ -17,13 +17,12 @@ struct PokemonDetailsView: View {
             VStack {
                 PokemonView(pokemon: pokemon)
                     .frame(width: 320, height: 320)
-                Text("\(pokemon.name)")
+                Text("\(pokemon.name)".capitalized)
                     .font(.system(size: 36))
                     .padding(.bottom)
                     .padding(.top, -15)
-
-                // TODO: Replace with computed variable to format id - #0001
-                Text("#000\(pokemon.id)")
+                    
+                Text("\(PokemonFormatter.formattedID(pokemon.id))")
                     .font(.system(size: 20))
                     .foregroundStyle(.gray)
                     .padding(.top, -20)

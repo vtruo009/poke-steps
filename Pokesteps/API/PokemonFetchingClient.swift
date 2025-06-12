@@ -10,16 +10,21 @@ import Foundation
 struct PokemonFetchingClient {
     static func getPokemons() async throws -> [Pokemon] {
         var pokemons: [Pokemon] = []
-//        for i in 1...151 {
-        for i in 1...3 {
-            async let (data, _) = URLSession.shared.data(
-                from: URL(string: "https://pokeapi.co/api/v2/pokemon/\(i)")!)
-            let response = try await JSONDecoder().decode(
-                Pokemon.self,
-                from: data
-            )
-            pokemons.append(response)
+        
+        try await withThrowingTaskGroup(of: Pokemon.self) { group in
+            for id in 1...151 {
+                group.addTask {
+                    let url = URL(string: "https://pokeapi.co/api/v2/pokemon/\(id)")!
+                    let (data, _) = try await URLSession.shared.data(from: url)
+                    return try JSONDecoder().decode(Pokemon.self, from: data)
+                }
+            }
+            
+            for try await pokemon in group {
+                pokemons.append(pokemon)
+            }
         }
-        return pokemons
+        
+        return pokemons.sorted { $0.id < $1.id}
     }
 }
