@@ -16,7 +16,7 @@ import SwiftUI
 //    }
 //}
 
-struct Pokemon: Identifiable, Codable {
+struct Pokemon: Identifiable, Codable, Equatable {
     var id: Int
     var name: String
     var image: URL?
