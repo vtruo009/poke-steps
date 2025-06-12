@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct StepsView: View {
+    @StateObject var healthVM = HealthViewModel()
+    
     var body: some View {
         ZStack {
             AppColor.background.ignoresSafeArea()
@@ -17,12 +19,10 @@ struct StepsView: View {
                 // TODO: replace with calculated progress
                 ProgressRingView(progress: 0.71)
                 Spacer()
-                // TODO: replace with HealthManager data
-                Text("3000").font(.system(size: 64))
+                Text("\(healthVM.todaySteps)").font(.system(size: 64))
                 Text("steps")
                 Spacer()
-                // TODO: replace with HealthManager data
-                Text("10,000").font(.largeTitle)
+                Text("\(healthVM.yesterdaySteps)").font(.largeTitle)
                 Text("yesterday")
                 Spacer()
                 Spacer()
