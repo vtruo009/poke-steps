@@ -21,4 +21,8 @@ struct PokemonFormatter {
         let pounds = kg * 2.20462
         return String(format: "%.2f lbs", pounds)
     }
+    
+    static func formattedID(_ id: Int) -> String {
+        return String(format: "#%04d", id)
+    }
 }
