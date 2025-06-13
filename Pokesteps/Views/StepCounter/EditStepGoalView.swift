@@ -8,9 +8,11 @@
 import SwiftUI
 
 struct EditStepGoalView: View {
-	@Binding var stepGoal: Int
+	@EnvironmentObject var userVM: UserViewModel
+	
 	@Binding var isPresented: Bool
 	@State private var input: String = ""
+	@State private var invalidGoal: Bool = false
 
 	var body: some View {
 		VStack(spacing: 20) {
@@ -18,13 +20,16 @@ struct EditStepGoalView: View {
 				.font(.system(size: 30))
 				.fontWeight(.semibold)
 
-			Text("Your current step goal is \(stepGoal).")
+			Text("Your current step goal is \(userVM.user.stepGoal).")
 
 			TextField("Enter new step goal", text: $input)
 				.keyboardType(.numberPad)
 				.padding()
 				.background(Color(.secondarySystemBackground))
 				.cornerRadius(10)
+			if invalidGoal {
+				Text("Please input at least 3000 steps.").foregroundStyle(.red)
+			}
 
 			HStack {
 				Button {
@@ -41,9 +46,11 @@ struct EditStepGoalView: View {
 				.padding(.trailing, 30)
 
 				Button {
-					if let newGoal = Int(input) {
-						stepGoal = newGoal
+					guard let newGoal = Int(input), newGoal > 3000 else {
+						invalidGoal =  true
+						return
 					}
+					userVM.updateStepGoal(with: newGoal)
 					isPresented = false
 				} label: {
 					Text("Save")
@@ -68,7 +75,7 @@ struct EditStepGoalView: View {
 }
 
 #Preview {
-	@Previewable @State var stepGoal = 1234
 	@Previewable @State var isPresenting = false
-	EditStepGoalView(stepGoal: $stepGoal, isPresented: $isPresenting)
+	EditStepGoalView(isPresented: $isPresenting)
+		.environmentObject(UserViewModel())
 }

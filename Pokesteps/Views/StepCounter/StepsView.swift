@@ -8,10 +8,16 @@
 import SwiftUI
 
 struct StepsView: View {
-	@StateObject var healthVM = HealthViewModel()
+	@EnvironmentObject var healthVM: HealthViewModel
+	@EnvironmentObject var userVM: UserViewModel
+	
 	@State var isPresenting = false
-	// TODO: Replace with user's step goal
-	@State var stepGoal = 9000
+	
+	var progress: CGFloat {
+		let steps = CGFloat(healthVM.todaySteps)
+		let goal = CGFloat(userVM.user.stepGoal)
+		return min(steps / goal, 1.0)
+	}
 
 	var body: some View {
 		NavigationView {
@@ -20,8 +26,7 @@ struct StepsView: View {
 
 				VStack {
 					Spacer()
-					// TODO: replace with calculated progress
-					ProgressRingView(progress: 0.71)
+					ProgressRingView(progress: progress)
 					Spacer()
 					Text("\(healthVM.todaySteps)").font(.system(size: 64))
 					Text("steps")
@@ -51,7 +56,6 @@ struct StepsView: View {
 					Color.black.opacity(0.4).ignoresSafeArea()
 
 					EditStepGoalView(
-						stepGoal: $stepGoal,
 						isPresented: $isPresenting
 					)
 
@@ -64,4 +68,6 @@ struct StepsView: View {
 
 #Preview {
 	StepsView()
+		.environmentObject(HealthViewModel())
+		.environmentObject(UserViewModel())
 }

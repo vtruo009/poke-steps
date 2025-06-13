@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct PokedexView: View {
-    @StateObject var pokemonVM = PokemonViewModel()
+	@EnvironmentObject var pokemonVM: PokemonViewModel
+	
     //    var pokemons = Pokemon.testPokemons
     @State var selectedPokemon: Pokemon? = nil
     let unlockedCount: Int = 42
@@ -76,5 +77,6 @@ struct PokedexView: View {
 }
 
 #Preview {
-    PokedexView()
+	PokedexView()
+		.environmentObject(PokemonViewModel())
 }
