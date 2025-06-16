@@ -10,9 +10,10 @@ import SwiftUI
 struct StepsView: View {
 	@EnvironmentObject var healthVM: HealthViewModel
 	@EnvironmentObject var userVM: UserViewModel
-	
+
 	@State var isPresenting = false
-	
+	@Binding var showUnlockedPokemon: Bool
+
 	var progress: CGFloat {
 		let steps = CGFloat(healthVM.todaySteps)
 		let goal = CGFloat(userVM.user.stepGoal)
@@ -26,7 +27,10 @@ struct StepsView: View {
 
 				VStack {
 					Spacer()
-					ProgressRingView(progress: progress)
+					ProgressRingView(
+						progress: progress,
+						showUnlockedPokemon: $showUnlockedPokemon
+					)
 					Spacer()
 					Text("\(healthVM.todaySteps)").font(.system(size: 64))
 					Text("steps")
@@ -36,7 +40,6 @@ struct StepsView: View {
 					Spacer()
 					Spacer()
 				}
-
 			}
 			.toolbar {
 				ToolbarItem(placement: .confirmationAction) {
@@ -67,7 +70,9 @@ struct StepsView: View {
 }
 
 #Preview {
-	StepsView()
+	@Previewable @State var pressed = false
+	
+	StepsView(showUnlockedPokemon: $pressed)
 		.environmentObject(HealthViewModel())
 		.environmentObject(UserViewModel())
 }
