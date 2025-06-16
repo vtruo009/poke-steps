@@ -9,9 +9,10 @@ import SwiftUI
 
 struct ProgressRingView: View {
 	@EnvironmentObject var userVM: UserViewModel
-	
+
 	var progress: CGFloat
 	@State var targetValue: CGFloat = 0.0
+	@Binding var showUnlockedPokemon: Bool
 
 	var body: some View {
 		ZStack {
@@ -40,6 +41,7 @@ struct ProgressRingView: View {
 			if progress >= 1 {
 				Button {
 					// TODO: Unlock Pokemon & add to set
+					showUnlockedPokemon = true
 					userVM.changeUnlockStatus()
 				} label: {
 					Image("pokeball")
@@ -53,5 +55,8 @@ struct ProgressRingView: View {
 }
 
 #Preview {
-	ProgressRingView(progress: 1).environmentObject(UserViewModel())
+	@Previewable @State var unlockButtonPressed = false
+
+	ProgressRingView(progress: 1, showUnlockedPokemon: $unlockButtonPressed)
+		.environmentObject(UserViewModel())
 }
