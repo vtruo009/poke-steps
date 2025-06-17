@@ -10,9 +10,9 @@ import SwiftUI
 struct StepsView: View {
 	@EnvironmentObject var healthVM: HealthViewModel
 	@EnvironmentObject var userVM: UserViewModel
-	
+
 	@State var isPresenting = false
-	
+
 	var progress: CGFloat {
 		let steps = CGFloat(healthVM.todaySteps)
 		let goal = CGFloat(userVM.user.stepGoal)
@@ -36,7 +36,6 @@ struct StepsView: View {
 					Spacer()
 					Spacer()
 				}
-
 			}
 			.toolbar {
 				ToolbarItem(placement: .confirmationAction) {

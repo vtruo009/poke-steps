@@ -8,8 +8,10 @@
 import SwiftUI
 
 struct ProgressRingView: View {
+	@EnvironmentObject var pokemonVM: PokemonViewModel
 	@EnvironmentObject var userVM: UserViewModel
-	
+	@EnvironmentObject var unlockManager: UnlockManager
+
 	var progress: CGFloat
 	@State var targetValue: CGFloat = 0.0
 
@@ -39,19 +41,28 @@ struct ProgressRingView: View {
 		.overlay {
 			if progress >= 1 {
 				Button {
-					// TODO: Unlock Pokemon & add to set
+					pokemonVM.unlockRandomPokemon()
+					unlockManager.showPokemonUnlocked = true
 					userVM.changeUnlockStatus()
 				} label: {
 					Image("pokeball")
 						.resizable()
 						.scaledToFit()
 						.frame(width: 250, height: 250)
+						.brightness(userVM.user.unlockedToday ? -0.3 : 0)
 				}
+				.disabled(pokemonVM.isLoading || userVM.user.unlockedToday)
 			}
 		}
 	}
 }
 
 #Preview {
-	ProgressRingView(progress: 1).environmentObject(UserViewModel())
+	@Previewable @State var unlockButtonPressed = false
+
+	ProgressRingView(
+		progress: 1
+	)
+		.environmentObject(UserViewModel())
+		.environmentObject(PokemonViewModel())
 }
