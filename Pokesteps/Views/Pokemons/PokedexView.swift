@@ -37,11 +37,16 @@ struct PokedexView: View {
 						}
 						.background(AppColor.background)
 						.navigationTitle("Pokédex")
+						.toolbarBackground(
+							AppColor.background,
+							for: .navigationBar
+						)
 						.onAppear {
 							if let unlocked = pokemonVM.unlockedPokemon {
 								withAnimation(.smooth) {
 									value.scrollTo(unlocked.id, anchor: .center)
 								}
+								pokemonVM.unlockedPokemon = nil
 							}
 						}
 				}
