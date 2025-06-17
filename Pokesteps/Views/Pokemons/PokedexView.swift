@@ -10,69 +10,41 @@ import SwiftUI
 struct PokedexView: View {
 	@EnvironmentObject var pokemonVM: PokemonViewModel
 
-//	    var pokemons = Pokemon.testPokemons
+	//	    var pokemons = Pokemon.testPokemons
 	@State var selectedPokemon: Pokemon? = nil
 
 	var body: some View {
 		NavigationView {
 			if pokemonVM.pokemons.isEmpty {
-//			if pokemons.isEmpty {
+				//			if pokemons.isEmpty {
 				ProgressView("Loading Pokémons...")
 			} else {
-				ScrollView {
-					let columns = [
-						GridItem(),
-						GridItem(),
-					]
-					Section(
-						header: Text("Unlocked: \(pokemonVM.numUnlocked)/151")
-							.font(.caption)
-							.foregroundStyle(.gray)
-					) {
-					}
-
-					LazyVGrid(columns: columns) {
-						ForEach(
-							pokemonVM.filteredPokemons
-						) { pokemon in
-							Button {
-								selectedPokemon = pokemon
-							} label: {
-								VStack {
-									PokemonView(
-										pokemon: pokemon,
-										viewStyle: .pokedex
-									)
-									Text("\(pokemon.isUnlocked ? pokemon.name : "???")")
-										.font(.system(size: 20))
-										.padding(.bottom)
-										.padding(.top, -15)
-								}
-							}
-							.buttonStyle(PlainButtonStyle())
-							.disabled(!pokemon.isUnlocked)
-						}
-					}
-					.animation(
-						.easeIn(duration: 0.3),
-						value: pokemonVM.filteredPokemons
-					)
-					.padding(.horizontal, 10)
-				}
-				.sheet(item: $selectedPokemon) { pokemon in
-					NavigationView {
-						PokemonDetailsView(pokemon: pokemon)
-							.toolbar {
-								ToolbarItem(placement: .cancellationAction) {
-									Button("Close") {
-										selectedPokemon = nil
+				ScrollViewReader { value in
+					PokedexGridView(selectedPokemon: $selectedPokemon)
+						.sheet(item: $selectedPokemon) { pokemon in
+							NavigationView {
+								PokemonDetailsView(pokemon: pokemon)
+									.toolbar {
+										ToolbarItem(
+											placement: .cancellationAction
+										) {
+											Button("Close") {
+												selectedPokemon = nil
+											}
+										}
 									}
+							}
+						}
+						.background(AppColor.background)
+						.navigationTitle("Pokédex")
+						.onAppear {
+							if let unlocked = pokemonVM.unlockedPokemon {
+								withAnimation(.smooth) {
+									value.scrollTo(unlocked.id, anchor: .center)
 								}
 							}
-					}
+						}
 				}
-				.background(AppColor.background)
-				.navigationTitle("Pokédex")
 			}
 		}
 		.searchable(text: $pokemonVM.searchText, prompt: "Search Pokédex")
