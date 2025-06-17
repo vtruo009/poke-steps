@@ -8,16 +8,14 @@
 import SwiftUI
 
 struct PokemonUnlockedView: View {
+	@EnvironmentObject var unlockManager: UnlockManager
+	
 	var pokemon: Pokemon
-	@State private var showPokedex = false
-
-	@Binding var selectedTab: Int
-	@Binding var showUnlockedPokemon: Bool
 
 	var body: some View {
 		VStack {
 			VStack(alignment: .center) {
-				Text("You've unlocked \(pokemon.name)!")
+				Text("You've unlocked \(pokemon.name.capitalized)!")
 					.font(.system(size: 50))
 					.multilineTextAlignment(.center)
 					.foregroundStyle(.white)
@@ -27,8 +25,8 @@ struct PokemonUnlockedView: View {
 
 			Button {
 				print("go to pokedex")
-				showUnlockedPokemon = false
-				selectedTab = 1
+				unlockManager.showPokemonUnlocked = false
+				unlockManager.selectedTab = 1
 			} label: {
 				Text("View in Pokédex")
 					.padding(.horizontal, 20)
@@ -47,13 +45,9 @@ struct PokemonUnlockedView: View {
 }
 
 #Preview {
-	@Previewable @State var tab = 0
-	@Previewable @State var show = false
 	var pokemon: Pokemon = Pokemon.testPokemons[4]
 
 	PokemonUnlockedView(
-		pokemon: pokemon,
-		selectedTab: $tab,
-		showUnlockedPokemon: $show
+		pokemon: pokemon
 	)
 }

@@ -12,7 +12,6 @@ struct StepsView: View {
 	@EnvironmentObject var userVM: UserViewModel
 
 	@State var isPresenting = false
-	@Binding var showUnlockedPokemon: Bool
 
 	var progress: CGFloat {
 		let steps = CGFloat(healthVM.todaySteps)
@@ -27,10 +26,7 @@ struct StepsView: View {
 
 				VStack {
 					Spacer()
-					ProgressRingView(
-						progress: progress,
-						showUnlockedPokemon: $showUnlockedPokemon
-					)
+					ProgressRingView(progress: progress)
 					Spacer()
 					Text("\(healthVM.todaySteps)").font(.system(size: 64))
 					Text("steps")
@@ -70,9 +66,7 @@ struct StepsView: View {
 }
 
 #Preview {
-	@Previewable @State var pressed = false
-	
-	StepsView(showUnlockedPokemon: $pressed)
+	StepsView()
 		.environmentObject(HealthViewModel())
 		.environmentObject(UserViewModel())
 }

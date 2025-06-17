@@ -8,23 +8,19 @@
 import SwiftUI
 
 struct MainTabView: View {
-	@State private var selectedTab = 0
-	@State var showUnlockedPokemon = false
+	@EnvironmentObject var pokemonVM: PokemonViewModel
+	@EnvironmentObject var unlockManager: UnlockManager
 
 	var body: some View {
 		NavigationView {
 			ZStack(alignment: .bottom) {
-				switch selectedTab {
+				switch unlockManager.selectedTab {
 				case 0:
-					StepsView(
-						showUnlockedPokemon: $showUnlockedPokemon
-					)
+					StepsView()
 				case 1:
 					PokedexView()
 				default:
-					StepsView(
-						showUnlockedPokemon: $showUnlockedPokemon
-					)
+					StepsView()
 				}
 
 				HStack {
@@ -39,12 +35,8 @@ struct MainTabView: View {
 				.clipShape(RoundedRectangle(cornerRadius: .infinity))
 				.shadow(radius: 5)
 
-				if showUnlockedPokemon {
-					PokemonUnlockedView(
-						pokemon: Pokemon.testPokemons[4],
-						selectedTab: $selectedTab,
-						showUnlockedPokemon: $showUnlockedPokemon
-					)
+				if unlockManager.showPokemonUnlocked {
+					PokemonUnlockedView(pokemon: pokemonVM.unlockedPokemon ?? Pokemon())
 					.zIndex(10)
 				}
 			}
@@ -54,7 +46,7 @@ struct MainTabView: View {
 
 	func tabButton(title: String, icon: String, tag: Int) -> some View {
 		Button {
-			selectedTab = tag
+			unlockManager.selectedTab = tag
 		} label: {
 			Image(systemName: icon)
 				.resizable()
@@ -65,7 +57,7 @@ struct MainTabView: View {
 				.padding(.horizontal, 24)
 				.background(
 					RoundedRectangle(cornerRadius: .infinity)
-						.foregroundStyle(selectedTab == tag ? .white : .clear)
+						.foregroundStyle(unlockManager.selectedTab == tag ? .white : .clear)
 						.frame(width: 75, height: 45)
 				)
 				.foregroundStyle(.black)
@@ -78,4 +70,5 @@ struct MainTabView: View {
 		.environmentObject(HealthViewModel())
 		.environmentObject(PokemonViewModel())
 		.environmentObject(UserViewModel())
+		.environmentObject(UnlockManager())
 }

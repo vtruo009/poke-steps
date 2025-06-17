@@ -10,14 +10,13 @@ import SwiftUI
 struct PokedexView: View {
 	@EnvironmentObject var pokemonVM: PokemonViewModel
 
-	//    var pokemons = Pokemon.testPokemons
+//	    var pokemons = Pokemon.testPokemons
 	@State var selectedPokemon: Pokemon? = nil
-	let unlockedCount: Int = 42
-	let totalCount: Int = 151
 
 	var body: some View {
 		NavigationView {
 			if pokemonVM.pokemons.isEmpty {
+//			if pokemons.isEmpty {
 				ProgressView("Loading Pokémons...")
 			} else {
 				ScrollView {
@@ -26,7 +25,7 @@ struct PokedexView: View {
 						GridItem(),
 					]
 					Section(
-						header: Text("Unlocked: \(unlockedCount)/\(totalCount)")
+						header: Text("Unlocked: \(pokemonVM.numUnlocked)/151")
 							.font(.caption)
 							.foregroundStyle(.gray)
 					) {
@@ -44,13 +43,14 @@ struct PokedexView: View {
 										pokemon: pokemon,
 										viewStyle: .pokedex
 									)
-									Text("\(pokemon.name)")
+									Text("\(pokemon.isUnlocked ? pokemon.name : "???")")
 										.font(.system(size: 20))
 										.padding(.bottom)
 										.padding(.top, -15)
 								}
 							}
 							.buttonStyle(PlainButtonStyle())
+							.disabled(!pokemon.isUnlocked)
 						}
 					}
 					.animation(

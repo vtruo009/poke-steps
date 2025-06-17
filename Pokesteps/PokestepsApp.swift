@@ -13,6 +13,7 @@ struct PokestepsApp: App {
 	@StateObject private var healthVM = HealthViewModel()
 	@StateObject private var pokemonVM = PokemonViewModel()
 	@StateObject private var userVM = UserViewModel()
+	@StateObject private var unlockManager = UnlockManager()
 	
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
@@ -29,10 +30,11 @@ struct PokestepsApp: App {
 
     var body: some Scene {
         WindowGroup {
-                MainTabView()
+			MainTabView()
 				.environmentObject(healthVM)
 				.environmentObject(pokemonVM)
 				.environmentObject(userVM)
+				.environmentObject(unlockManager)
         }
         .modelContainer(sharedModelContainer)
     }

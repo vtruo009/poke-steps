@@ -32,7 +32,11 @@ struct PokemonView: View {
 					.foregroundStyle(viewStyle.foregroundColor)
 					.padding()
 					.overlay {
-						AsyncImage(url: pokemon.image) { image in
+						AsyncImage(
+							url: URL(
+								string: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/\(pokemon.isUnlocked ? pokemon.id : 0).png"
+							)
+						) { image in
 							image.image?
 								.resizable()
 								.scaledToFit()
