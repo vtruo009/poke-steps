@@ -49,8 +49,9 @@ struct ProgressRingView: View {
 						.resizable()
 						.scaledToFit()
 						.frame(width: 250, height: 250)
+						.brightness(userVM.user.unlockedToday ? -0.3 : 0)
 				}
-				.disabled(pokemonVM.isLoading)
+				.disabled(pokemonVM.isLoading || userVM.user.unlockedToday)
 			}
 		}
 	}
