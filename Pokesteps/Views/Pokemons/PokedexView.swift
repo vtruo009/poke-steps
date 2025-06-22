@@ -10,13 +10,11 @@ import SwiftUI
 struct PokedexView: View {
 	@EnvironmentObject var pokemonVM: PokemonViewModel
 
-	//	    var pokemons = Pokemon.testPokemons
 	@State var selectedPokemon: Pokemon? = nil
 
 	var body: some View {
 		NavigationView {
 			if pokemonVM.pokemons.isEmpty {
-				//			if pokemons.isEmpty {
 				ProgressView("Loading Pokémons...")
 			} else {
 				ScrollViewReader { value in
@@ -57,6 +55,8 @@ struct PokedexView: View {
 }
 
 #Preview {
+	@Previewable @State var userVM: UserViewModel = UserViewModel()
 	PokedexView()
-		.environmentObject(PokemonViewModel())
+		.environmentObject(PokemonViewModel(user: userVM.user))
+		.environmentObject(userVM)
 }

@@ -103,11 +103,11 @@ struct Pokemon: Identifiable, Codable, Equatable {
 		weight = try values.decode(Int.self, forKey: .weight)
 
 		let typeObject = try values.decode(
-			[TypesContainer].self,
+			[String].self,
 			forKey: .types
 		)
 		types = typeObject.compactMap {
-			PokemonType(rawValue: $0.type.name)
+			PokemonType(rawValue: $0)
 		}
 
 		isUnlocked = false
@@ -142,13 +142,13 @@ struct Pokemon: Identifiable, Codable, Equatable {
 
 }
 
-struct TypesContainer: Decodable {
-	let type: TypeInfo
-
-	struct TypeInfo: Decodable {
-		let name: String
-	}
-}
+//struct TypesContainer: Decodable {
+//	let type: TypeInfo
+//
+//	struct TypeInfo: Decodable {
+//		let name: String
+//	}
+//}
 
 extension Pokemon {
 	static let testPokemons: [Pokemon] = [

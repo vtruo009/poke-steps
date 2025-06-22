@@ -50,7 +50,7 @@ struct EditStepGoalView: View {
 						invalidGoal =  true
 						return
 					}
-					userVM.updateStepGoal(with: newGoal)
+					userVM.updateStepGoal(to: newGoal)
 					isPresented = false
 				} label: {
 					Text("Save")

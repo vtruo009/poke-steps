@@ -9,19 +9,24 @@ import Foundation
 
 @MainActor
 class PokemonViewModel: ObservableObject {
+	@Published var user: User
 	@Published var pokemons: [Pokemon] = []
 	@Published var unlockedPokemon: Pokemon? = nil
 	@Published var isLoading: Bool = false
 	@Published var errorMessage: String?
 	@Published var searchText: String = ""
-	@Published var numUnlocked: Int = 0
 
 	private let manager = PokemonManager()
 
-	init() {
+	init(user: User) {
+		self.user = user
 		Task {
 			await loadPokemons()
 		}
+	}
+	
+	func updateUser(_ newUser: User) {
+		self.user = newUser
 	}
 
 	var filteredPokemons: [Pokemon] {
@@ -29,29 +34,34 @@ class PokemonViewModel: ObservableObject {
 			? pokemons
 			: pokemons
 			.filter {
-				$0.name.contains(searchText.lowercased()) && $0.isUnlocked
+				$0.name
+					.contains(searchText.lowercased()) && user.unlockedPokemons
+					.contains($0.id)
 			}
 	}
 	
-	// TODO: Save Pokemon
-
 	func loadPokemons() async {
 		isLoading = true
-
-		do {
-			pokemons = try await manager.fetchPokemons()
-		} catch {
-			errorMessage = error.localizedDescription
+		
+		Task {
+			do {
+				let pokemons = try await PokemonsRepository.loadPokemons()
+				self.pokemons = pokemons
+			} catch {
+				print("Error loading Pokemons: \(error)")
+			}
 		}
 
 		isLoading = false
 	}
 	
-	func unlockRandomPokemon() {
-		let lockedPokemons = pokemons.filter { !$0.isUnlocked }
+	func unlockRandomPokemon() -> Int {
+		let lockedPokemons = pokemons.filter {
+			!user.unlockedPokemons.contains($0.id)
+		}
 		let randomID = Int.random(in: 0...lockedPokemons.count)
-		pokemons[randomID].isUnlocked = true
-		numUnlocked += 1
+		
 		unlockedPokemon = pokemons[randomID]
+		return randomID + 1
 	}
 }

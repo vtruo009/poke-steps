@@ -45,9 +45,9 @@ struct StepsView: View {
 						Image(systemName: "square.and.pencil")
 							.resizable()
 							.frame(width: 30, height: 30)
+							.padding()
 					}
 					.buttonStyle(PlainButtonStyle())
-					.padding()
 				}
 			}
 			.overlay {

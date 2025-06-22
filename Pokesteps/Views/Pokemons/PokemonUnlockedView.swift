@@ -21,7 +21,7 @@ struct PokemonUnlockedView: View {
 					.foregroundStyle(.white)
 			}
 
-			PokemonView(pokemon: pokemon, viewStyle: .plain)
+			PokemonView(pokemon: pokemon, isUnlocked: true, viewStyle: .plain)
 
 			Button {
 				print("go to pokedex")
@@ -45,7 +45,7 @@ struct PokemonUnlockedView: View {
 }
 
 #Preview {
-	var pokemon: Pokemon = Pokemon.testPokemons[4]
+	let pokemon: Pokemon = Pokemon.testPokemons[4]
 
 	PokemonUnlockedView(
 		pokemon: pokemon
