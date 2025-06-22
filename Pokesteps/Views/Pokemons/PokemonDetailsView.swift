@@ -15,7 +15,7 @@ struct PokemonDetailsView: View {
 			AppColor.background.ignoresSafeArea()
 
 			VStack {
-				PokemonView(pokemon: pokemon, viewStyle: .plain)
+				PokemonView(pokemon: pokemon, isUnlocked: true, viewStyle: .plain)
 					.frame(width: 320, height: 320)
 				Text("\(pokemon.name)".capitalized)
 					.font(.system(size: 36))

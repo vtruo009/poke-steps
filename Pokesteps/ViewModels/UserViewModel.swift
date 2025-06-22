@@ -6,15 +6,39 @@
 //
 
 import Foundation
+import FirebaseFirestore
 
+@MainActor
 class UserViewModel: ObservableObject {
-	@Published var user = User.testUser
+	@Published var user: User = User.testUser
 	
-	func changeUnlockStatus() {
-		user.unlockedToday = true
+	init() {
+		Task {
+			await loadUser()
+		}
 	}
 	
-	func updateStepGoal(with newGoal: Int) {
+	func unlockPokemon(_ pokemonId: Int) {
+		user.unlockedToday = true
+		user.unlockedPokemons.insert(pokemonId)
+		Task {
+			try? await UsersRepository.update(user)
+		}
+	}
+	
+	func updateStepGoal(to newGoal: Int) {
 		user.stepGoal = newGoal
+		Task {
+			try? await UsersRepository.update(user)
+		}
+	}
+	
+	private func loadUser() async {
+		do {
+			let user = try await UsersRepository.loadOrCreate()
+			self.user = user
+		} catch {
+			print("Failed to load user: \(error)")
+		}
 	}
 }

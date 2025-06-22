@@ -7,13 +7,18 @@
 
 import SwiftUI
 import SwiftData
+import Firebase
 
 @main
 struct PokestepsApp: App {
 	@StateObject private var healthVM = HealthViewModel()
-	@StateObject private var pokemonVM = PokemonViewModel()
 	@StateObject private var userVM = UserViewModel()
+	@StateObject private var pokemonVM = PokemonViewModel(user: User.testUser)
 	@StateObject private var unlockManager = UnlockManager()
+	
+	init() {
+		FirebaseApp.configure()
+	}
 	
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
@@ -35,6 +40,9 @@ struct PokestepsApp: App {
 				.environmentObject(pokemonVM)
 				.environmentObject(userVM)
 				.environmentObject(unlockManager)
+				.onChange(of: userVM.user) { _, newUser in
+					pokemonVM.updateUser(newUser)
+				}
         }
         .modelContainer(sharedModelContainer)
     }

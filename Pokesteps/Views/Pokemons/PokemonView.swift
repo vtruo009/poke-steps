@@ -9,6 +9,7 @@ import SwiftUI
 
 struct PokemonView: View {
 	var pokemon: Pokemon
+	var isUnlocked: Bool
 
 	enum ViewStyle {
 		case pokedex, plain
@@ -34,7 +35,7 @@ struct PokemonView: View {
 					.overlay {
 						AsyncImage(
 							url: URL(
-								string: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/\(pokemon.isUnlocked ? pokemon.id : 0).png"
+								string: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/\(isUnlocked ? pokemon.id : 0).png"
 							)
 						) { image in
 							image.image?
@@ -54,5 +55,5 @@ struct PokemonView: View {
 
 #Preview {
 	let testPokemon = Pokemon.testPokemons[2]
-	PokemonView(pokemon: testPokemon, viewStyle: .pokedex)
+	PokemonView(pokemon: testPokemon, isUnlocked: false, viewStyle: .pokedex)
 }
