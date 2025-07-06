@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct StepsView: View {
-	@EnvironmentObject var healthVM: HealthViewModel
+	@EnvironmentObject var hkManager: HealthKitManager
 	@EnvironmentObject var userVM: UserViewModel
 
 	@State var isPresenting = false
 
 	var progress: CGFloat {
-		let steps = CGFloat(healthVM.todaySteps)
+		let steps = CGFloat(hkManager.todayStepCount)
 		let goal = CGFloat(userVM.user.stepGoal)
 		return min(steps / goal, 1.0)
 	}
@@ -28,10 +28,10 @@ struct StepsView: View {
 					Spacer()
 					ProgressRingView(progress: progress)
 					Spacer()
-					Text("\(healthVM.todaySteps)").font(.system(size: 64))
+					Text("\(hkManager.todayStepCount)").font(.system(size: 64))
 					Text("steps")
 					Spacer()
-					Text("\(healthVM.yesterdaySteps)").font(.largeTitle)
+					Text("\(hkManager.yesterdayStepCount)").font(.largeTitle)
 					Text("yesterday")
 					Spacer()
 					Spacer()
@@ -45,9 +45,9 @@ struct StepsView: View {
 						Image(systemName: "square.and.pencil")
 							.resizable()
 							.frame(width: 30, height: 30)
+							.padding()
 					}
 					.buttonStyle(PlainButtonStyle())
-					.padding()
 				}
 			}
 			.overlay {
@@ -67,6 +67,6 @@ struct StepsView: View {
 
 #Preview {
 	StepsView()
-		.environmentObject(HealthViewModel())
+		.environmentObject(HealthKitManager())
 		.environmentObject(UserViewModel())
 }

@@ -41,9 +41,9 @@ struct ProgressRingView: View {
 		.overlay {
 			if progress >= 1 {
 				Button {
-					pokemonVM.unlockRandomPokemon()
+					let randomId = pokemonVM.unlockRandomPokemon()
 					unlockManager.showPokemonUnlocked = true
-					userVM.changeUnlockStatus()
+					userVM.unlockPokemon(randomId)
 				} label: {
 					Image("pokeball")
 						.resizable()
@@ -59,10 +59,11 @@ struct ProgressRingView: View {
 
 #Preview {
 	@Previewable @State var unlockButtonPressed = false
+	@Previewable @State var userVM: UserViewModel = UserViewModel()
 
 	ProgressRingView(
 		progress: 1
 	)
-		.environmentObject(UserViewModel())
-		.environmentObject(PokemonViewModel())
+		.environmentObject(userVM)
+		.environmentObject(PokemonViewModel(user: userVM.user))
 }

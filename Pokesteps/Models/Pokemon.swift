@@ -22,7 +22,6 @@ struct Pokemon: Identifiable, Codable, Equatable {
 	var types: [PokemonType]
 	var height: Int
 	var weight: Int
-	var isUnlocked: Bool
 
 	enum PokemonType: String, CaseIterable, Codable {
 		case fire
@@ -103,14 +102,12 @@ struct Pokemon: Identifiable, Codable, Equatable {
 		weight = try values.decode(Int.self, forKey: .weight)
 
 		let typeObject = try values.decode(
-			[TypesContainer].self,
+			[String].self,
 			forKey: .types
 		)
 		types = typeObject.compactMap {
-			PokemonType(rawValue: $0.type.name)
+			PokemonType(rawValue: $0)
 		}
-
-		isUnlocked = false
 	}
 
 	init(
@@ -118,15 +115,13 @@ struct Pokemon: Identifiable, Codable, Equatable {
 		name: String,
 		types: [PokemonType],
 		height: Int,
-		weight: Int,
-		isUnlocked: Bool
+		weight: Int
 	) {
 		self.id = id
 		self.name = name
 		self.types = types
 		self.height = height
 		self.weight = weight
-		self.isUnlocked = isUnlocked
 	}
 
 	init() {
@@ -135,19 +130,10 @@ struct Pokemon: Identifiable, Codable, Equatable {
 			name: "",
 			types: [],
 			height: 0,
-			weight: 0,
-			isUnlocked: false
+			weight: 0
 		)
 	}
 
-}
-
-struct TypesContainer: Decodable {
-	let type: TypeInfo
-
-	struct TypeInfo: Decodable {
-		let name: String
-	}
 }
 
 extension Pokemon {
@@ -157,48 +143,42 @@ extension Pokemon {
 			name: "Bulbasaur",
 			types: [.grass, .poison],
 			height: 10,
-			weight: 20,
-			isUnlocked: false
+			weight: 20
 		),
 		Pokemon(
 			id: 2,
 			name: "Ivysaur",
 			types: [.grass, .poison],
 			height: 10,
-			weight: 130,
-			isUnlocked: false
+			weight: 130
 		),
 		Pokemon(
 			id: 3,
 			name: "Venusaur",
 			types: [.grass, .poison],
 			height: 40,
-			weight: 80,
-			isUnlocked: true
+			weight: 80
 		),
 		Pokemon(
 			id: 4,
 			name: "Charmander",
 			types: [.fire],
 			height: 20,
-			weight: 20,
-			isUnlocked: false
+			weight: 20
 		),
 		Pokemon(
 			id: 7,
 			name: "Squirtle",
 			types: [.water],
 			height: 20,
-			weight: 25,
-			isUnlocked: true
+			weight: 25
 		),
 		Pokemon(
 			id: 25,
 			name: "Pikachu",
 			types: [.electric],
 			height: 20,
-			weight: 13,
-			isUnlocked: false
+			weight: 13
 		),
 	]
 }

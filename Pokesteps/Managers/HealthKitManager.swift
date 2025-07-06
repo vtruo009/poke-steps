@@ -9,79 +9,129 @@ import Foundation
 import HealthKit
 
 enum HealthKitError: Error {
-    case noQuantityResult
-    case authorizationFailed
+	case noQuantityResult
+	case authorizationFailed
 }
 
 struct HealthDateRange {
-    let start: Date
-    let end: Date
+	let start: Date
+	let end: Date
 
-    static var today: HealthDateRange {
-        let calendar = Calendar.current
-        let start = calendar.startOfDay(for: Date())
-        let end = calendar.date(byAdding: .day, value: 1, to: start)!
-        return HealthDateRange(start: start, end: end)
-    }
+	static var today: HealthDateRange {
+		let calendar = Calendar.current
+		let start = calendar.startOfDay(for: Date())
+		let end = calendar.date(byAdding: .day, value: 1, to: start)!
+		return HealthDateRange(start: start, end: end)
+	}
 
-    static var yesterday: HealthDateRange {
-        let calendar = Calendar.current
-        let start = calendar.date(
-            byAdding: .day,
-            value: -1,
-            to: calendar.startOfDay(for: Date())
-        )!
-        let end = calendar.date(byAdding: .day, value: 1, to: start)!
-        return HealthDateRange(start: start, end: end)
-    }
+	static var yesterday: HealthDateRange {
+		let calendar = Calendar.current
+		let start = calendar.date(
+			byAdding: .day,
+			value: -1,
+			to: calendar.startOfDay(for: Date())
+		)!
+		let end = calendar.date(byAdding: .day, value: 1, to: start)!
+		return HealthDateRange(start: start, end: end)
+	}
 }
 
-class HealthKitManager {
-    let healthStore = HKHealthStore()
+@MainActor
+class HealthKitManager: ObservableObject {
+	@Published var todayStepCount: Int = 0
+	@Published var yesterdayStepCount: Int = 0
 
-    func requestAuthorization() async throws {
-        let steps = HKQuantityType(.stepCount)
-        let healthTypes: Set = [steps]
+	let healthStore = HKHealthStore()
 
-        let success = await withCheckedContinuation { continuation in
-            healthStore
-                .requestAuthorization(toShare: [], read: healthTypes) {
-                    success, _ in
-                    continuation.resume(returning: success)
-                }
-        }
+	private var observerQuery: HKObserverQuery?
 
-        if !success {
-            throw HealthKitError.authorizationFailed
-        }
-    }
+	init() {
+		Task {
+			do {
+				try await requestAuthorization()
+			} catch {
+				print("\(error)")
+			}
+		}
+	}
 
-    func fetchStepCount(for range: HealthDateRange) async throws -> Int {
-        let steps = HKQuantityType(.stepCount)
+	private func requestAuthorization() async throws {
+		let steps = HKQuantityType(.stepCount)
+		let healthTypes: Set = [steps]
 
-        return try await withCheckedThrowingContinuation { continuation in
-            let predicate = HKQuery.predicateForSamples(
-                withStart: range.start,
-                end: range.end,
-                options: .strictStartDate
-            )
+		let success = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Bool, Error>) in
+			healthStore
+				.requestAuthorization(toShare: [], read: healthTypes) {
+					success, error in
+					if let error {
+						continuation.resume(throwing: error)
+					} else {
+						continuation.resume(returning: success)
+					}
+				}
+		}
 
-            let query = HKStatisticsQuery(
-                quantityType: steps,
-                quantitySamplePredicate: predicate,
-                options: .cumulativeSum
-            ) { _, result, error in
-                if let error = error {
-                    continuation.resume(throwing: error)
-                    return
-                }
+		if !success {
+			throw HealthKitError.authorizationFailed
+		}
 
-                let steps = Int(
-                    result?.sumQuantity()?.doubleValue(for: .count()) ?? 0.0)
-                continuation.resume(returning: steps)
-            }
+		await setUpObserver(for: steps)
+		self.todayStepCount = try await fetchStepCount(for: .today)
+		self.yesterdayStepCount = try await fetchStepCount(for: .yesterday)
+	}
 
-            healthStore.execute(query)
-        }
-    }
+	private func setUpObserver(for stepType: HKQuantityType) async {
+		try? await healthStore
+			.enableBackgroundDelivery(for: stepType, frequency: .immediate)
+
+		observerQuery = HKObserverQuery(
+			sampleType: stepType,
+			predicate: nil
+		) { (_, completionHandler, _) in
+			Task { @MainActor in
+				do {
+					self.todayStepCount = try await self.fetchStepCount(for: .today)
+					// No need for yesterday because it doens't update after initial fetch
+				} catch {
+					print(
+						"Error fetching today's step count: \(error.localizedDescription)"
+					)
+				}
+			}
+			completionHandler()
+		}
+
+		if let query = observerQuery {
+			healthStore.execute(query)
+		}
+	}
+
+	func fetchStepCount(for range: HealthDateRange) async throws -> Int {
+		let steps = HKQuantityType(.stepCount)
+
+		return try await withCheckedThrowingContinuation { continuation in
+			let predicate = HKQuery.predicateForSamples(
+				withStart: range.start,
+				end: range.end,
+				options: .strictStartDate
+			)
+
+			let query = HKStatisticsQuery(
+				quantityType: steps,
+				quantitySamplePredicate: predicate,
+				options: .cumulativeSum
+			) { _, result, error in
+				if let error = error {
+					continuation.resume(throwing: error)
+					return
+				}
+
+				let steps = Int(
+					result?.sumQuantity()?.doubleValue(for: .count()) ?? 0.0)
+				continuation.resume(returning: steps)
+			}
+
+			healthStore.execute(query)
+		}
+	}
 }

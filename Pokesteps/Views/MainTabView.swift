@@ -66,9 +66,10 @@ struct MainTabView: View {
 }
 
 #Preview {
+	@Previewable @State var userVM: UserViewModel = UserViewModel()
 	MainTabView()
-		.environmentObject(HealthViewModel())
-		.environmentObject(PokemonViewModel())
-		.environmentObject(UserViewModel())
+		.environmentObject(HealthKitManager())
+		.environmentObject(PokemonViewModel(user: userVM.user))
+		.environmentObject(userVM)
 		.environmentObject(UnlockManager())
 }

@@ -7,26 +7,18 @@
 
 import Foundation
 
-struct User {
-	var unlockedToday: Bool
-	var stepGoal: Int
-	var unlockedPokemon: Set<Int>
+struct User: Identifiable, Codable, Equatable {
+	var id: String
+	var unlockedToday: Bool = false
+	var lastUnlocked: Date?
+	var stepGoal: Int = 3000
+	var unlockedPokemons: Set<Int> = []
 	
-	init(unlockedToday: Bool, stepGoal: Int, unlockedPokemon: Set<Int>) {
-		self.unlockedToday = unlockedToday
-		self.stepGoal = stepGoal
-		self.unlockedPokemon = unlockedPokemon
-	}
-	
-	init() {
-		self.init(unlockedToday: false, stepGoal: 3000, unlockedPokemon: [])
+	init(id: String) {
+		self.id = id
 	}
 }
 
 extension User {
-	static var testUser = User(
-		unlockedToday: false,
-		stepGoal: 3000,
-		unlockedPokemon: [1,3,6,7,14,25,87]
-	)
+	static var testUser = User(id: "user1234")
 }
