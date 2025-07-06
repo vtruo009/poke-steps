@@ -10,6 +10,7 @@ import Foundation
 struct User: Identifiable, Codable, Equatable {
 	var id: String
 	var unlockedToday: Bool = false
+	var lastUnlocked: Date?
 	var stepGoal: Int = 3000
 	var unlockedPokemons: Set<Int> = []
 	

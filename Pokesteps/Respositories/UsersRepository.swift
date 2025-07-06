@@ -28,13 +28,26 @@ struct UsersRepository {
 		
 		let snapshot = try await document.getDocument()
 		if snapshot.exists {
-			return try snapshot.data(as: User.self)
+			var user = try snapshot.data(as: User.self)
+			var now = Date()
+			var cal = Calendar.current
+			
+			if !cal
+				.isDate(now, inSameDayAs: user.lastUnlocked ?? .distantPast) {
+				user.unlockedToday = false
+				user.lastUnlocked = now
+				try await usersRef.document(user.id).setData(from: user)
+			}
+			
+			return user
 		} else {
 			let newUser = User(id: id)
 			try await document.setData(from: newUser)
 			return newUser
 		}
 	}
+	
+	
 	
 	static func update(_ user: User) async throws {
 		try await usersRef.document(user.id).setData(from: user)

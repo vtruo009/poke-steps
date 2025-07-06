@@ -11,14 +11,13 @@ import Firebase
 
 @main
 struct PokestepsApp: App {
-	@StateObject private var healthVM = HealthViewModel()
+	@Environment(\.scenePhase) private var phase
 	@StateObject private var userVM = UserViewModel()
 	@StateObject private var pokemonVM = PokemonViewModel(user: User.testUser)
+	@StateObject private var hkManager = HealthKitManager()
 	@StateObject private var unlockManager = UnlockManager()
 	
-	init() {
-		FirebaseApp.configure()
-	}
+	init() { FirebaseApp.configure() }
 	
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
@@ -36,14 +35,21 @@ struct PokestepsApp: App {
     var body: some Scene {
         WindowGroup {
 			MainTabView()
-				.environmentObject(healthVM)
 				.environmentObject(pokemonVM)
 				.environmentObject(userVM)
 				.environmentObject(unlockManager)
+				.environmentObject(hkManager)
 				.onChange(of: userVM.user) { _, newUser in
 					pokemonVM.updateUser(newUser)
 				}
         }
+		.onChange(of: phase) { _, newPhase in
+			if newPhase == .active {
+				Task {
+					await userVM.loadUser()
+				}
+			}
+		}
         .modelContainer(sharedModelContainer)
     }
 }

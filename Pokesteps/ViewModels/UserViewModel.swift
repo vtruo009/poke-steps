@@ -33,7 +33,7 @@ class UserViewModel: ObservableObject {
 		}
 	}
 	
-	private func loadUser() async {
+	func loadUser() async {
 		do {
 			let user = try await UsersRepository.loadOrCreate()
 			self.user = user
