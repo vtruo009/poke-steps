@@ -34,9 +34,22 @@
 		7C0827532DED0EC300405F82 /* PokestepsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PokestepsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		7C46665D2E1B5232000CD98B /* Exceptions for "Pokesteps" folder in "Pokesteps" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 7C0827362DED0EC000405F82 /* Pokesteps */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		7C0827392DED0EC000405F82 /* Pokesteps */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				7C46665D2E1B5232000CD98B /* Exceptions for "Pokesteps" folder in "Pokesteps" target */,
+			);
 			path = Pokesteps;
 			sourceTree = "<group>";
 		};
@@ -412,6 +425,7 @@
 				DEVELOPMENT_TEAM = 3MAB6524AL;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Pokesteps/Info.plist;
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Please allow access to track steps";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -443,6 +457,7 @@
 				DEVELOPMENT_TEAM = 3MAB6524AL;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Pokesteps/Info.plist;
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Please allow access to track steps";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

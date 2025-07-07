@@ -26,6 +26,7 @@ struct PokedexGridView: View {
 				header: Text(
 					"Unlocked: \(userPokemons.count)/151"
 				)
+				.font(.custom("JetBrainsMono-Light", size: 12))
 					.font(.caption)
 					.foregroundStyle(.gray)
 			) {

@@ -18,12 +18,12 @@ struct PokemonDetailsView: View {
 				PokemonView(pokemon: pokemon, isUnlocked: true, viewStyle: .plain)
 					.frame(width: 320, height: 320)
 				Text("\(pokemon.name)".capitalized)
-					.font(.system(size: 36))
+					.font(.custom("JetBrainsMono-Regular", size: 36))
 					.padding(.bottom)
 					.padding(.top, -15)
 
 				Text("\(PokemonFormatter.formattedID(pokemon.id))")
-					.font(.system(size: 20))
+					.font(.custom("JetBrainsMono-Regular", size: 20))
 					.foregroundStyle(.gray)
 					.padding(.top, -20)
 				Spacer()
@@ -34,8 +34,7 @@ struct PokemonDetailsView: View {
 							.frame(width: 100, height: 35, alignment: .center)
 							.clipShape(RoundedRectangle(cornerRadius: 6))
 							.overlay {
-								Text("\(type)".uppercased()).fontWeight(.medium)
-									.fontDesign(.monospaced)
+								Text("\(type)".uppercased()).font(.custom("JetBrainsMono-Medium", size: 18))
 							}
 					}
 				}
@@ -48,7 +47,7 @@ struct PokemonDetailsView: View {
 						"Weight: \(PokemonFormatter.formattedWeight(pokemon.weight))"
 					)
 				}
-				.font(.system(size: 20))
+				.font(.custom("JetBrainsMono-Regular", size: 20))
 				.fontWeight(.medium)
 				Spacer()
 			}

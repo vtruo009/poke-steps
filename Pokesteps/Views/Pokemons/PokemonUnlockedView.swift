@@ -16,7 +16,7 @@ struct PokemonUnlockedView: View {
 		VStack {
 			VStack(alignment: .center) {
 				Text("You've unlocked \(pokemon.name.capitalized)!")
-					.font(.system(size: 50))
+					.font(.custom("JetBrainsMono-Regular", size: 50))
 					.multilineTextAlignment(.center)
 					.foregroundStyle(.white)
 			}
@@ -31,7 +31,7 @@ struct PokemonUnlockedView: View {
 				Text("View in Pokédex")
 					.padding(.horizontal, 20)
 					.padding(.vertical, 10)
-					.fontWeight(.semibold)
+					.font(.custom("JetBrainsMono-SemiBold", size: 20))
 					.background(
 						RoundedRectangle(cornerRadius: 10)
 							.fill(AppColor.yellow)
