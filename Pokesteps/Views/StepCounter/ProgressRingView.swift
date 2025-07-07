@@ -38,6 +38,7 @@ struct ProgressRingView: View {
 		.onAppear {
 			targetValue = progress
 		}
+		.ignoresSafeArea(.keyboard)
 		.overlay {
 			if progress >= 1 {
 				Button {

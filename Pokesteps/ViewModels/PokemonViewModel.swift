@@ -10,7 +10,7 @@ import Foundation
 @MainActor
 class PokemonViewModel: ObservableObject {
 	@Published var user: User
-	@Published var pokemons: [Pokemon] = []
+	@Published var pokemons: [Pokemon] = Pokemon.testPokemons
 	@Published var unlockedPokemon: Pokemon? = nil
 	@Published var isLoading: Bool = false
 	@Published var errorMessage: String?
