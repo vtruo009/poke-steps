@@ -7,16 +7,15 @@ An iOS step counter application inspired by Ash Ketchum's Pokémon journey — e
 Pokésteps is a **gamified fitness app** designed to make routine activities like walking more enjoyable and engaging.  
 By integrating elements of gaming, it motivates users to stay active while having fun.
 
-Users can unlock and collect all **151 original Pokémon** by earning experience points through their daily step counts.  
-The app leverages **HealthKit** to track steps and **PokéAPI** to deliver a Pokédex-inspired interface for tracking progress and achievements.
+Users can unlock and collect all **151 original Pokémon** by earning experience points through their daily step counts. The app leverages **HealthKit** to track steps and **PokéAPI** to deliver a Pokédex-inspired interface for tracking progress and achievements.
 
 With features like **customizable step goals**, the app caters to both beginners looking to ease into a healthier lifestyle and advanced users pushing their limits.
 
 <p align="center">
-  <img src="./assets/images/screenshots/sign-up.png" alt="sign-up" width="200"/>
-  <img src="./assets/images/screenshots/steps.png" alt="steps" width="200"/>
-  <img src="./assets/images/screenshots/pokedex.png" alt="pokedex" width="200"/>
-  <img src="./assets/images/screenshots/pokemon-details.png" alt="pokemon details" width="200"/>
+  <img src="./assets/homescreen.png" alt="homescreen" width="200"/>
+  <img src="./assets/goal-met.png" alt="goal met" width="200"/>
+  <img src="./assets/pokedex.png" alt="pokedex" width="200"/>
+  <img src="./assets/pokemon-details.png" alt="pokemon details" width="200"/>
 </p>
 
 ## ⚡️ Get Started
