@@ -5,9 +5,9 @@
 //  Created by Van Truong on 6/1/25.
 //
 
-import SwiftUI
-import SwiftData
 import Firebase
+import SwiftData
+import SwiftUI
 
 @main
 struct PokestepsApp: App {
@@ -16,25 +16,35 @@ struct PokestepsApp: App {
 	@StateObject private var pokemonVM = PokemonViewModel(user: User.testUser)
 	@StateObject private var hkManager = HealthKitManager()
 	@StateObject private var unlockManager = UnlockManager()
-	
-	init() { FirebaseApp.configure() }
-	
-    var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            Item.self,
-        ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
-        do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
-        } catch {
-            fatalError("Could not create ModelContainer: \(error)")
-        }
-    }()
+	init() {
+		FirebaseApp.configure()
+	}
 
-    var body: some Scene {
-        WindowGroup {
+	var sharedModelContainer: ModelContainer = {
+		let schema = Schema([
+			Item.self
+		])
+		let modelConfiguration = ModelConfiguration(
+			schema: schema, isStoredInMemoryOnly: false)
+
+		do {
+			return try ModelContainer(
+				for: schema, configurations: [modelConfiguration])
+		} catch {
+			fatalError("Could not create ModelContainer: \(error)")
+		}
+	}()
+
+	var body: some Scene {
+		WindowGroup {
 			MainTabView()
+				.font(
+					.custom(
+						"JetBrainsMono-Regular",
+						size: 14
+					)
+				)
 				.environmentObject(pokemonVM)
 				.environmentObject(userVM)
 				.environmentObject(unlockManager)
@@ -42,7 +52,7 @@ struct PokestepsApp: App {
 				.onChange(of: userVM.user) { _, newUser in
 					pokemonVM.updateUser(newUser)
 				}
-        }
+		}
 		.onChange(of: phase) { _, newPhase in
 			if newPhase == .active {
 				Task {
@@ -50,6 +60,6 @@ struct PokestepsApp: App {
 				}
 			}
 		}
-        .modelContainer(sharedModelContainer)
-    }
+		.modelContainer(sharedModelContainer)
+	}
 }

@@ -17,7 +17,7 @@ struct EditStepGoalView: View {
 	var body: some View {
 		VStack(spacing: 20) {
 			Text("Edit Step Goal")
-				.font(.system(size: 30))
+				.font(.custom("JetBrainsMono-Regular", size: 30))
 				.fontWeight(.semibold)
 
 			Text("Your current step goal is \(userVM.user.stepGoal).")
@@ -36,6 +36,7 @@ struct EditStepGoalView: View {
 					isPresented = false
 				} label: {
 					Text("Cancel")
+						.font(.custom("JetBrainsMono-Medium", size: 18))
 						.background(
 							RoundedRectangle(cornerRadius: 10)
 								.stroke()
@@ -54,7 +55,7 @@ struct EditStepGoalView: View {
 					isPresented = false
 				} label: {
 					Text("Save")
-						.fontWeight(.medium)
+						.font(.custom("JetBrainsMono-Medium", size: 18))
 						.foregroundStyle(.black)
 						.background(
 							RoundedRectangle(cornerRadius: 10)

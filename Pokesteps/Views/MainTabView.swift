@@ -10,17 +10,19 @@ import SwiftUI
 struct MainTabView: View {
 	@EnvironmentObject var pokemonVM: PokemonViewModel
 	@EnvironmentObject var unlockManager: UnlockManager
+	
+	@State var isPresenting: Bool = false
 
 	var body: some View {
 		NavigationView {
 			ZStack(alignment: .bottom) {
 				switch unlockManager.selectedTab {
 				case 0:
-					StepsView()
+						StepsView(isPresenting: $isPresenting)
 				case 1:
 					PokedexView()
 				default:
-					StepsView()
+						StepsView(isPresenting: $isPresenting)
 				}
 
 				HStack {
@@ -40,8 +42,18 @@ struct MainTabView: View {
 					.zIndex(10)
 				}
 			}
+			.ignoresSafeArea(.keyboard)
+			.overlay {
+				if isPresenting {
+					Color.black.opacity(0.4).ignoresSafeArea()
+
+					EditStepGoalView(
+						isPresented: $isPresenting
+					)
+					.zIndex(0)
+				}
+			}
 		}
-		.background(.orange)
 	}
 
 	func tabButton(title: String, icon: String, tag: Int) -> some View {

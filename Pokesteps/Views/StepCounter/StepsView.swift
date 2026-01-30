@@ -11,7 +11,7 @@ struct StepsView: View {
 	@EnvironmentObject var hkManager: HealthKitManager
 	@EnvironmentObject var userVM: UserViewModel
 
-	@State var isPresenting = false
+	@Binding var isPresenting: Bool
 
 	var progress: CGFloat {
 		let steps = CGFloat(hkManager.todayStepCount)
@@ -20,7 +20,7 @@ struct StepsView: View {
 	}
 
 	var body: some View {
-		NavigationView {
+		NavigationStack {
 			ZStack {
 				AppColor.background.ignoresSafeArea()
 
@@ -28,15 +28,18 @@ struct StepsView: View {
 					Spacer()
 					ProgressRingView(progress: progress)
 					Spacer()
-					Text("\(hkManager.todayStepCount)").font(.system(size: 64))
+					Text("\(hkManager.todayStepCount)").font(.custom("JetBrainsMono-Medium", size: 64))
 					Text("steps")
 					Spacer()
-					Text("\(hkManager.yesterdayStepCount)").font(.largeTitle)
+					Text("\(hkManager.yesterdayStepCount)")
+						.font(.custom("JetBrainsMono-Medium", size: 32))
 					Text("yesterday")
 					Spacer()
 					Spacer()
 				}
+				.ignoresSafeArea(.keyboard)
 			}
+//			.ignoresSafeArea(.keyboard)
 			.toolbar {
 				ToolbarItem(placement: .confirmationAction) {
 					Button {
@@ -50,23 +53,14 @@ struct StepsView: View {
 					.buttonStyle(PlainButtonStyle())
 				}
 			}
-			.overlay {
-				if isPresenting {
-					Color.black.opacity(0.4).ignoresSafeArea()
-
-					EditStepGoalView(
-						isPresented: $isPresenting
-					)
-
-				}
-			}
 			.animation(.easeInOut, value: isPresenting)
 		}
 	}
 }
 
 #Preview {
-	StepsView()
+	@Previewable @State var isPresenting: Bool = false
+	StepsView(isPresenting: $isPresenting)
 		.environmentObject(HealthKitManager())
 		.environmentObject(UserViewModel())
 }
